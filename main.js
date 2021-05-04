@@ -7,43 +7,41 @@ Vue.component('product', {
     },
     template: `
         <div class="product">
-        <div class="product-image">
-            <img :src="image">
-        </div>
-
-        <div class="product-info">
-            <h1>{{ title }}</h1>
-            <p v-if="inventory > 10">In Stock</p>
-            <p v-else-if="inventory <=10 && inventory > 0">almost Out of Stock</p>
-            <p v-else :class="{ outOfStock: !inStock }">Out of Stock</p>
-            <span v-show="onSale">On Sale</span>
-            <p>{{ sale }}</p>
-            <p>Shipping: {{ shipping }}</p>
-            <a :href="link" target="_blank">More products like that</a>
-
-            <ul>
-                <li v-for="detail in details">{{ detail }}</li>
-            </ul>
-
-            <div v-for="(variant, index) in variants"
-                :key="variant.variantId"
-                class="color-box"
-                :style="{ backgroundColor: variant.variantColor }"
-                @mouseover="updateProduct(index)">
+            <div class="product-image">
+                <img :src="image">
             </div>
 
-            <ul>
-                <li v-for="size in sizes">{{ size }}</li>
-            </ul>
-            <button v-on:click="addToCart"
-                    :disabled="!inStock"
-                    :class="{ disabledButton: !inStock }">Add to Cart</button>
-            <button @click="removeFromCart">Remove to Cart</button>
-            <div class="cart">
-                <p>Cart({{ cart }})</p>
+            <div class="product-info">
+                <h1>{{ title }}</h1>
+                <p v-if="inventory > 10">In Stock</p>
+                <p v-else-if="inventory <=10 && inventory > 0">almost Out of Stock</p>
+                <p v-else :class="{ outOfStock: !inStock }">Out of Stock</p>
+                <span v-show="onSale">On Sale</span>
+                <p>{{ sale }}</p>
+                <p>Shipping: {{ shipping }}</p>
+                <a :href="link" target="_blank">More products like that</a>
+
+                <product_details :details="details"></product_details>
+
+                <div v-for="(variant, index) in variants"
+                    :key="variant.variantId"
+                    class="color-box"
+                    :style="{ backgroundColor: variant.variantColor }"
+                    @mouseover="updateProduct(index)">
+                </div>
+
+                <ul>
+                    <li v-for="size in sizes">{{ size }}</li>
+                </ul>
+                <button v-on:click="addToCart"
+                        :disabled="!inStock"
+                        :class="{ disabledButton: !inStock }">Add to Cart</button>
+                <button @click="removeFromCart">Remove to Cart</button>
+                <div class="cart">
+                    <p>Cart({{ cart }})</p>
+                </div>
             </div>
         </div>
-    </div>
     `,
     data(){
         return{
@@ -53,7 +51,7 @@ Vue.component('product', {
             link: "https://www.google.com",
             inventory: 0,
             onSale: false,
-            details: ["80% cotton", "20% poliester", "Gender-neutral"],
+            details: ["80% cotton", "15% poliester", "Gender-neutral"],
             variants:[
                 {
                     variantId: 2234,
@@ -112,10 +110,37 @@ Vue.component('product', {
     }
 })
 
+
+Vue.component('product_details', {
+    props:{
+        details:{
+            type: Array,
+            required: true
+        }
+    },
+    template:`
+        <ul>
+            <li v-for="detail in details">{{ detail }}</li>
+        </ul>
+    `,
+    data(){
+        return{
+            
+        }
+    },
+    methods:{
+
+    },
+    computed:{
+
+    }
+})
+
+
 var app = new Vue({
     el: "#app",
     data:{
-        premium: false
+        premium: false,
     }
     
 });
